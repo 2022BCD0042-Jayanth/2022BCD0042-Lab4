@@ -89,7 +89,7 @@ jobs:
       - name: Stop if not improved
         if: steps.gate.outputs.improved != 'true'
         run: |
-          echo "2022BCS0025----Metric did not improve"
+          echo "2022BCS0208----Metric did not improve"
           exit 0
 
       - name: Login Docker Hub
@@ -104,8 +104,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcs0025:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcs0025:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcs0208:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcs0208:${{ github.sha }}
 
       - name: Update BEST_R2 and BEST_MSE (GitHub Variables)
         run: |
