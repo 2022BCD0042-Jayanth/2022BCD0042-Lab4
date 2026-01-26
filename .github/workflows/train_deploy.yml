@@ -131,6 +131,6 @@ jobs:
           patch_var("BEST_MSE", os.environ["CUR_MSE"])
           PY
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_PAT: ${{ secrets.GITHUBPERSONAL_ACCESS_TOKEN }}
           CUR_R2: ${{ steps.gate.outputs.cur_r2 }}
           CUR_MSE: ${{ steps.gate.outputs.cur_mse }}
