@@ -39,7 +39,7 @@ pipeline {
         stage('Read Accuracy') {
     steps {
         script {
-            ACC = sh(
+            def ACC = sh(
                 script: "jq '.r2' metrics.json",
                 returnStdout: true
             ).trim()
