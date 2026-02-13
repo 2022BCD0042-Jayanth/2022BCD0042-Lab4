@@ -82,7 +82,11 @@ pipeline {
             }
         }
     }
-
+    stage('Debug Artifacts') {
+    steps {
+        sh 'ls -R'
+    }
+}
     post {
         always {
             archiveArtifacts artifacts: 'app/artifacts/**'
