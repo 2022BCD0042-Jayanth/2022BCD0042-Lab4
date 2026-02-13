@@ -90,7 +90,7 @@ pipeline {
     
     post {
         always {
-            archiveArtifacts artifacts: 'app/artifacts/**'
+            archiveArtifacts artifacts: 'artifacts/**'
         }
     }
 }
