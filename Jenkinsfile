@@ -90,7 +90,8 @@ pipeline {
     
     post {
         always {
-            archiveArtifacts artifacts: 'artifacts/**'
+            archiveArtifacts artifacts: 'model.pkl, metrics.json, results.json'
+
         }
     }
 }
