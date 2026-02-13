@@ -30,6 +30,11 @@ pipeline {
                 '''
             }
         }
+        stage('Debug Files') {
+            steps {
+                sh 'ls -R'
+            }
+        }
 
         stage('Read Accuracy') {
             steps {
