@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
-  
+
 jobs:
   train:
     runs-on: ubuntu-latest
@@ -60,6 +60,9 @@ jobs:
 
       - name: Compare metrics with baseline
         id: gate
+        env:
+          BEST_R2: ${{ vars.BEST_R2 }}
+          BEST_MSE: ${{ vars.BEST_MSE }}
         run: |
           python - << 'PY'
           import json, os
@@ -82,9 +85,6 @@ jobs:
           print("Best:   ", best_r2, best_mse)
           print("Improved?", improved)
           PY
-        env:
-          BEST_R2: ${{ vars.BEST_R2 }}
-          BEST_MSE: ${{ vars.BEST_MSE }}
 
       - name: Stop if not improved
         if: steps.gate.outputs.improved != 'true'
@@ -95,8 +95,8 @@ jobs:
       - name: Login Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push image
         uses: docker/build-push-action@v6
@@ -104,10 +104,14 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/wine_predict_2022bcs0208:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/wine_predict_2022bcs0208:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcs0208:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcs0208:${{ github.sha }}
 
       - name: Update BEST_R2 and BEST_MSE (GitHub Variables)
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          CUR_R2: ${{ steps.gate.outputs.cur_r2 }}
+          CUR_MSE: ${{ steps.gate.outputs.cur_mse }}
         run: |
           python - << 'PY'
           import os, requests
@@ -130,7 +134,3 @@ jobs:
           patch_var("BEST_R2", os.environ["CUR_R2"])
           patch_var("BEST_MSE", os.environ["CUR_MSE"])
           PY
-        env:
-          GH_PAT: ${{ secrets.GITHUBPERSONAL_ACCESS_TOKEN }}
-          CUR_R2: ${{ steps.gate.outputs.cur_r2 }}
-          CUR_MSE: ${{ steps.gate.outputs.cur_mse }}
