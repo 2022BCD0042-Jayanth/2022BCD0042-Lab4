@@ -104,8 +104,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcs0042:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcs0042:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcd0042:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/wine_predict_2022bcd0042:${{ github.sha }}
 
       - name: Update BEST_R2 and BEST_MSE (GitHub Variables)
         env:
